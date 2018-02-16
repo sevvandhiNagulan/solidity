@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+	<head><title>libary</title></head>
+		<script src="web3.min.js"></script>
+<body>
+<form>
+		<input type="text" id="a" name="book" value="Book Name" />
+		<input type="text" id="o" name="isbn3"  value="ISBN" />
+		<input type="text" id="q" name="avail"   value="Availability"
+ />
+		<input type="button" value="ADD BOOKS" onclick="bookDetails()" /> <br><br>
+		
+		<input type="text" id="b" name="student"  value="Student Name" />
+		<input type="text" id="t" name="name1"  value="Roll No" />
+		<input type="button" value="STUDENT DETAILS" onclick="studentDetails()" /> <br><br>
+
+		
+		<input type="text" id="c" name="num"  value="ISBN No" />
+		<input type="button" value="SEARCH" onclick="Search()" /> <br><br>
+
+		<input type="text" id="e" name="num1"  value="ISBN NO"/>
+		<input type="text" id="f" name="code"  value="Book Name" />
+		<input type="button" value="Availability" onclick="Availability()" /> <br><br>
+
+		<input type="text" id="h" name="roll1"  value="Roll No" />
+		<input type="text" id="i" name="isbn"  value="ISBN no" />
+		<input type="text" id="j" name="code1"   value="Book Name" />
+		<input type="button" value="GET BOOKS" onclick="GetBooks()" /> <br><br>
+
+		<input type="text" id="l" name="isbn1"  value="ISBN no" />
+		<input type="text" id="m" name="code2"   value="Book Name"/>
+		<input type="button" value="Return Books" onclick="ReturnBooks()" /> <br><br>
+		
+		<input type="button" value="fine" onclick="FineAmount()" /> 		
+
+
+</form>
+
+</body>
+
+<script>
+		web3.eth.defaultAccount = web3.eth.accounts[0];
+		var abi=web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "num",
+				"type": "uint256"
+			}
+		],
+		"name": "search",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "fine",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "num",
+				"type": "uint256"
+			},
+			{
+				"name": "BName",
+				"type": "string"
+			}
+		],
+		"name": "Availability",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_bName",
+				"type": "string"
+			},
+			{
+				"name": "_ISBN",
+				"type": "uint256"
+			},
+			{
+				"name": "_avail",
+				"type": "uint256"
+			}
+		],
+		"name": "addBookDetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "roll",
+				"type": "uint256"
+			},
+			{
+				"name": "isbn",
+				"type": "uint256"
+			},
+			{
+				"name": "BName",
+				"type": "string"
+			}
+		],
+		"name": "getBooks",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "isbn",
+				"type": "uint256"
+			},
+			{
+				"name": "BName",
+				"type": "string"
+			}
+		],
+		"name": "returnBooks",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_stu_name",
+				"type": "string"
+			},
+			{
+				"name": "_roll_no",
+				"type": "uint256"
+			}
+		],
+		"name": "studentDetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]);
+
+		var conAddr=abi.at('0xae225de0970d76016e2d58145d3ab42521008a40');
+
+
+
+		function bookDetails(){
+				var a=document.getElementById('a').value;
+				var o=parseInt(document.getElementById('o').value);
+				var q=parseInt(document.getElementById('q').value);
+				conAddr.addBookDetails(a,o,q,function(error,result){
+					if(!error){
+						//alert(result);
+					}
+					else{
+						alert("errored");
+					}
+				
+		});
+		}
+		
+		function studentDetails(){
+			var b=document.getElementById('b').value;
+			var t=parseInt(document.getElementById('t').value);
+			conAddr.studentDetails(b,t,function(error,result){
+					if(!error){
+						//alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+
+		function Search(){
+				var c=parseInt(document.getElementById('c').value);
+				conAddr.search(c,function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+		
+		function Availability(){
+				var e=parseInt(document.getElementById('e').value);
+				var f=document.getElementById('f').value;
+				conAddr.Availability(e,f,function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+
+		function GetBooks(){
+				var h=parseInt(document.getElementById('h').value);
+				var i=parseInt(document.getElementById('i').value);
+				var j=document.getElementById('j').value;
+				conAddr.getBooks(h,i,j,function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+		
+		function ReturnBooks(){
+			var l=parseInt(document.getElementById('l').value);
+			var m=document.getElementById('i').value;	
+			conAddr.returnBooks(l,m,function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+		
+
+		function FineAmount(){	
+			conAddr.fine(function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+		
+
+</script>
+
+</html>
