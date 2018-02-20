@@ -1,0 +1,36 @@
+ function products()
+          {
+            sybex.totalproducts ( 
+function(err, result)
+{ 
+var d=[];
+var l=[];
+var res=[];
+
+
+for(j=0;j<7;j++)
+{
+
+var a=result[0][j];
+    var s = '';
+ 
+    for (var k = 0; k < a.length; k += 2) 
+    {
+      s+= String.fromCharCode(parseInt(a.substr(k, 2), 16));
+
+    }
+d.push(s);
+}
+
+for(i=0;i<7;i++){
+var b=result[1][i];
+l.push(b);
+}
+
+for(y=0;y<7;y++)
+res.push(" " + d[y]+" -  "+l[y]+ "  ");
+document.getElementById("pli").innerHTML=res;
+});
+ 
+
+}
