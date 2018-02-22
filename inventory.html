@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+	<head><title>IBACO</title></head>
+		<script src="web3.min.js"></script>
+<body style="background-color:powderblue;">
+<marquee><h3>WELCOME TO OUR IBACO SHOP</H3></marquee>
+<center><img src="ibco.png" alt="Smiley face" height="240" width="240"></center>
+<form>
+<fieldset>
+		<input type="text" id="a"  placeholder="ID" />
+		<input type="text" id="b"  placeholder="price" />
+		<input type="text" id="c"  placeholder="proName" />
+		<input type="text" id="d"  placeholder="Availability" />
+		<input type="button" value="SetProduct" onclick="addProduct()" />
+</fieldset>
+
+<fieldset>
+		<input type="button" value="AvailableProducts" onclick="AvailableProducts()" />
+</fieldset>
+<fieldset>
+		<input type="text" id="e"  placeholder="Name" />
+		<input type="text" id="f"  placeholder="Phone No" />
+		<input type="button" value="UserDetails" onclick="UserDetails()" />
+</fieldset>
+
+<fieldset>
+		<input type="text" id="g"  placeholder="ID" />
+		<input type="text" id="h"  placeholder="proName" />
+		<input type="text" id="i"  placeholder="Count" />
+		<input type="button" value="GetProducts" onclick="GetProducts()" />
+</fieldset>
+<fieldset>
+		<input type="text" id="j" placeholder="ether" />
+		<input type="text" id="k" placeholder="account number" />
+		<input type="button" value="Ethersend" onclick="EtherSend()" />
+</fieldset>
+
+
+</form>
+<center><h2 id="m"></h2></center>
+</body>
+
+<script>
+		web3.eth.defaultAccount = web3.eth.accounts[0];
+		var abi=web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "AvailableProducts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			},
+			{
+				"name": "",
+				"type": "uint256[]"
+			},
+			{
+				"name": "",
+				"type": "bytes32[]"
+			},
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "total_supply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalProducts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "tokenOwner",
+				"type": "address"
+			},
+			{
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "count",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "tokenOwner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "tokenOwner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "EtherSend",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"name": "_proName",
+				"type": "bytes32"
+			},
+			{
+				"name": "count",
+				"type": "uint256"
+			}
+		],
+		"name": "GetProducts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"name": "_proName",
+				"type": "bytes32"
+			},
+			{
+				"name": "_avail",
+				"type": "uint256"
+			}
+		],
+		"name": "ProductDetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "deposit",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "bytes32"
+			},
+			{
+				"name": "_phno",
+				"type": "uint256"
+			}
+		],
+		"name": "userDetails",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]);
+
+		var conAddr=abi.at('0x1e616767eaa0b6a4979986bc60eaab664ed2a2f3');
+		var count;
+		function addProduct(){
+			var a=parseInt(document.getElementById('a').value);
+			var b=parseInt(document.getElementById('b').value);
+			var c=document.getElementById('c').value;
+			var d=parseInt(document.getElementById('d').value);
+				conAddr.ProductDetails(a,b,c,d,function(error,result){
+					if(!error){
+			
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+	
+		function AvailableProducts(){
+				var count;
+			conAddr.totalProducts(function(error,result){
+								if(!error){
+									count=result;
+								}
+								else
+								{
+									alert("errored1");
+								}
+							});
+
+
+			conAddr.AvailableProducts(function(error,result){
+					if(!error){
+						var id=[];
+						var price=[];
+						var string=[];
+						var avail=[];
+						var res=[];
+						for(var i=0;i<count;i++){
+							var b=result[0][i];
+							id.push(b);
+						}
+						for(var i=0;i<count;i++){
+							var b=result[1][i];
+							price.push(b);
+						}
+						for(var i=0;i<count;i++){
+							var a=result[2][i];
+							var s=' ';
+							for(var k=0;k<a.length;k+=2){
+								s += String.fromCharCode(parseInt(a.substr(k,2), 16));
+							}
+							string.push(s);
+						}
+						for(var i=0;i<count;i++){
+							var b=result[3][i];
+							avail.push(b);
+						}
+						//document.write("<table border=0>");
+						for(var i=0;i<count;i++){
+							res.push(id[i]+ " - " +price[i]+" -"  +string[i]+ " - " +avail[i]+ "<br \>"+ " " );              
+							
+
+							//document.write("<tr>");
+							//document.write("<td>res[i]" +"</td>");
+							//document.write("</tr>");
+						}
+						//document.write("</table>");
+						document.getElementById('m').innerHTML=res;
+						//document.write(res);		
+					}
+
+					else{
+						alert("errored0");
+					}
+		});
+				
+		}
+
+		function UserDetails(){
+			var e=document.getElementById('e').value;
+			var f=parseInt(document.getElementById('f').value);
+				conAddr.userDetails(e,f,function(error,result){
+					if(!error){
+						//alert(result);
+					}
+					else{
+						alert("errored");
+					}
+				
+		});
+		}
+
+		function GetProducts(){
+			var g=parseInt(document.getElementById('g').value);
+			var h=document.getElementById('h').value;
+			var i=parseInt(document.getElementById('i').value);
+				conAddr.GetProducts(g,h,i,function(error,result){
+					if(!error){
+						alert(result);
+					}
+					else{
+						alert("errored");
+					}
+				
+		});
+		}
+		function EtherSend(){
+		
+						var eth=document.getElementById('j').value;
+						eth=web3.toWei(eth,"ether");
+						web3.eth.defaultAccount=document.getElementById('k').value;
+						conAddr.EtherSend({value: eth},function(error,result){
+						if(!error){
+						}
+						else{
+						alert("errored");
+						}
+				
+		});
+		}
+	
+
+
+</script>
+</html>
