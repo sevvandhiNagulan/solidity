@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head><title>libary</title></head>
+		<script src="web3.min.js"></script>
+<body>
+<form>
+<fieldset>
+		<input type="text" id="a" name="book" placeholder="To Address" />
+		<input type="text" id="b" name="isbn3"  placeholder="Amount" />
+		<input type="button" value="TRANSFER" onclick="transfer()" />
+</fieldset>	
+<fieldset>
+		<input type="text" id="c" name="book" placeholder="Amount" />
+		<input type="button" value="MINT" onclick="mint()" />
+</fieldset>	
+</form>
+
+</body>
+
+<script>
+		web3.eth.defaultAccount = web3.eth.accounts[0];
+		var abi=web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "balances",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "constructor"
+	}
+]);
+		var conAddr=abi.at('0x5dc691658c0fae3f7d2943f4bdc22c799aa30f27');
+		function transfer(){
+				var a=document.getElementById('a').value;
+				var b=parseInt(document.getElementById('b').value);
+				conAddr.transfer(a,b,function(error,result){
+					if(!error){
+						//alert(result);
+					}
+					else{
+						alert("errored");
+					}
+				
+		});
+		}
+		
+		function mint(){
+			var c=parseInt(document.getElementById('c').value);
+			conAddr.mint(c,function(error,result){
+					if(!error){
+						//alert(result);
+					}
+					else{
+						alert("errored");
+					}
+		});
+		}
+	
+</script>
+
+</html>
