@@ -1,0 +1,97 @@
+Token:
+
+pragma solidity ^0.4.0;
+import "./ERC20Interface.sol";
+import "./SafeMath.sol";
+
+contract ERC20 is ERC20Interface{
+    string public symbol;
+    string public name;
+    uint public decimals;
+    uint public total_supply;
+    address owner;
+    using SafeMath for uint;
+    mapping(address=>uint) balances;
+    mapping(address => mapping(address => uint)) allowed;
+    
+    function ERC20()public payable{
+        owner=msg.sender;
+        symbol="$";
+        name="sss";
+        decimals=18;
+        total_supply=5000;
+        balances[owner]=total_supply;
+        
+    }
+    
+    modifier onlyOwner(){
+        if(msg.sender!=owner){
+            revert();
+        }
+        _;
+    }
+    function balanceOf(address tokenOwner) public constant returns (uint) {
+        return balances[tokenOwner];
+    }
+    function transfer(address to, uint amount) public returns (bool) {
+        require(msg.sender!=to && amount>0);
+        balances[msg.sender] = balances[msg.sender].sub(amount);
+        balances[to] = balances[to].add(amount);
+        Transfer(msg.sender,to,amount);
+        return true;
+    }
+     function approve(address spender, uint amount) public returns (bool) {
+        require(msg.sender != spender && amount>0);
+        allowed[msg.sender][spender] = amount;
+        Approval(msg.sender,spender,amount);
+        return true;
+    }
+    function allowance(address tokenOwner, address spender) public constant returns (uint) {
+        require(tokenOwner != spender);
+        return allowed[tokenOwner][spender];
+    }
+    function withdraw(uint amount) public returns(bool){
+     require(amount>total_supply && amount>0);
+     balances[msg.sender]=balances[msg.sender].sub(amount);
+     return true;
+    }
+    function deposit(uint amount) public returns(bool){
+        require(amount>0);
+        balances[msg.sender]=balances[msg.sender].add(amount);
+        return true;
+    }
+}
+
+pragma solidity ^0.4.0;
+
+interface ERC20Interface{
+    function balanceOf(address tokenOwner) public constant returns (uint);
+    function allowance(address tokenOwner, address spender) public constant returns (uint);
+    function transfer(address to, uint amount) public returns (bool);
+    function approve(address spender, uint amount) public returns (bool);
+    function deposit(uint amount) public returns (bool);
+    function withdraw(uint amount) public returns (bool);
+    
+    event Transfer(address from, address to, uint amount);
+    event Approval(address tokenOwner, address spender, uint amount);
+}
+
+
+pragma solidity ^0.4.0;
+
+library SafeMath{
+    function add(uint a, uint b) internal pure returns (uint c) {
+        c = a + b;
+        require(c >= a);
+    }
+
+    function sub(uint a, uint b) internal pure returns (uint c) {
+        require(b <= a);
+        c = a - b;
+    }
+    
+    function mul(uint a, uint b) internal pure returns (uint c) {
+        c = a * b;
+        return c;
+    }
+}
